@@ -1,8 +1,8 @@
-import { HeartOutline } from 'antd-mobile-icons';
 import { FC, useEffect } from 'react';
 import { Avatar } from 'antd-mobile';
-import styles from './style.module.scss';
+import { HeartOutline } from 'antd-mobile-icons';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import styles from './style.module.scss';
 
 interface IHeaderProps {
   avatarUrl: string;
@@ -11,6 +11,12 @@ interface IHeaderProps {
 const Header: FC<IHeaderProps> = ({ avatarUrl }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const goToUserPage = () => {
+    if (pathname !== '/user') {
+      navigate('/user');
+    }
+  };
 
   useEffect(() => {
     if (pathname === '/') {
@@ -25,7 +31,7 @@ const Header: FC<IHeaderProps> = ({ avatarUrl }) => {
           <HeartOutline /> 易苗
         </div>
         <div className={styles.avatar}>
-          <Avatar src={avatarUrl} />
+          <Avatar src={avatarUrl} onClick={goToUserPage} />
         </div>
       </div>
       <Outlet />

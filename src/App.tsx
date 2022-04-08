@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import Home from './containers/Home';
 import Header from './components/Header';
+import Loading from './components/Loading';
 
 const User = lazy(() => import('./containers/User'));
 
@@ -20,7 +21,7 @@ function App() {
         <Route
           path='user'
           element={
-            <Suspense fallback={<>Loading...</>}>
+            <Suspense fallback={<Loading />}>
               <User />
             </Suspense>
           }
@@ -29,7 +30,16 @@ function App() {
           path='*'
           element={
             <main style={{ padding: '1rem' }}>
-              <p>404 Not Found</p>
+              <p
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  fontSize: '30px',
+                  marginTop: '20px',
+                }}
+              >
+                404 Not Found
+              </p>
             </main>
           }
         />
