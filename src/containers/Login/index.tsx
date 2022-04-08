@@ -3,7 +3,7 @@ import '@authing/react-ui-components/lib/index.min.css';
 import './style.scss';
 
 const Login = () => {
-  const appId = '62110454c4fafbf8af15124a';
+  const appId = '625053a3aa0ec8dbd0381ba1';
   const onLogin = (userInfo: User) => {
     localStorage.token = userInfo.token;
     localStorage.tokenExpiredAt = userInfo.tokenExpiredAt;

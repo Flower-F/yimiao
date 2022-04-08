@@ -1,5 +1,5 @@
 .user {
-  max-width: 96%;
+  max-width: 90%;
   margin: 10px auto;
   .info {
     position: relative;
@@ -12,13 +12,16 @@
     }
   }
 
-  .list {
-    .item {
-      display: flex;
-      .detail {
+  .selection {
+    .list {
+      margin-top: 10px;
+      .item {
         display: flex;
-        align-items: center;
-        margin-left: auto;
+        .detail {
+          display: flex;
+          align-items: center;
+          margin-left: auto;
+        }
       }
     }
   }

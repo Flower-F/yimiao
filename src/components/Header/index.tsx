@@ -18,6 +18,12 @@ const Header: FC<IHeaderProps> = ({ avatarUrl }) => {
     }
   };
 
+  const goBackHome = () => {
+    if (pathname !== '/home') {
+      navigate('/home');
+    }
+  };
+
   useEffect(() => {
     if (pathname === '/') {
       navigate('/home');
@@ -27,7 +33,7 @@ const Header: FC<IHeaderProps> = ({ avatarUrl }) => {
   return (
     <>
       <div className={styles.header}>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={goBackHome}>
           <HeartOutline /> 易苗
         </div>
         <div className={styles.avatar}>

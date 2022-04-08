@@ -12,7 +12,7 @@ const User = lazy(() => import('./containers/User'));
 const Detail = lazy(() => import('./containers/Detail'));
 
 initAuthClient({
-  appId: '62110454c4fafbf8af15124a',
+  appId: '625053a3aa0ec8dbd0381ba1',
 });
 
 const avatarUrl = localStorage.getItem('photo') || '';
