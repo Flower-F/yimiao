@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  min-height: 40px;
+  line-height: 56px;
+  padding: 8px 0;
+
+  .avatar {
+    margin-top: 6px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+}

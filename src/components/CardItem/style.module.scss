@@ -1,0 +1,16 @@
+.card {
+  border-radius: 16px;
+
+  .content {
+    line-height: 1.5;
+
+    p {
+      padding: 4px 0;
+    }
+  }
+
+  .footer {
+    margin-top: 4px;
+    text-align: right;
+  }
+}
