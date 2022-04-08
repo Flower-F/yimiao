@@ -66,10 +66,10 @@ const CardList: FC<ICardListProps> = ({ list: originalList, className }) => {
 
       <ul>
         {list.length > 0 ? (
-          list.map((properties, index) => {
+          list.map((item) => {
             return (
-              <li key={index} className={styles.cardItem}>
-                <CardItem {...properties} />
+              <li key={item.id} className={styles.cardItem}>
+                <CardItem {...item} />
               </li>
             );
           })

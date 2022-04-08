@@ -5,6 +5,7 @@ import { OperationTypes } from './types';
 import styles from './style.module.scss';
 
 export interface ICardItemProps {
+  id: string;
   status: string;
   title: string;
   type: string;
@@ -45,9 +46,7 @@ const CardItem: FC<ICardItemProps> = ({ status, title, type, operation }) => {
         <p>疫苗类型：{type}</p>
         <p>状态：{status}</p>
       </div>
-      <div className={styles.footer}>
-        {getStatusButton()}
-      </div>
+      <div className={styles.footer}>{getStatusButton()}</div>
     </Card>
   );
 };

@@ -6,24 +6,28 @@ import styles from './style.module.scss';
 
 const list = [
   {
+    id: '21313213',
     operation: OperationTypes.SUBSCRIBE,
     title: '小谷围社区',
     type: '新冠疫苗',
     status: '2014-12-24 14:27:00 开放预约',
   },
   {
+    id: '21313214',
     operation: OperationTypes.SUBSCRIBED,
     title: '小谷围社区',
     type: '新冠疫苗',
     status: '2014-12-24 14:27:00 开放预约',
   },
   {
+    id: '21313215',
     operation: OperationTypes.FOLLOW,
     title: 'C5 427',
     type: '九价疫苗',
     status: '2014-12-24 14:27:00 开放预约',
   },
   {
+    id: '21313216',
     operation: OperationTypes.FOLLOWED,
     title: '北京路',
     type: '四价疫苗',

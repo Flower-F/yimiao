@@ -6,6 +6,7 @@ import Login from './containers/Login';
 import Header from './components/Header';
 import Loading from './components/Loading';
 import { getLoginStatus } from './utils/login';
+import { ErrorBlock } from 'antd-mobile';
 
 const User = lazy(() => import('./containers/User'));
 
@@ -40,17 +41,8 @@ function App() {
           <Route
             path='*'
             element={
-              <main style={{ padding: '1rem' }}>
-                <p
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    fontSize: '30px',
-                    marginTop: '20px',
-                  }}
-                >
-                  404 Not Found
-                </p>
+              <main>
+                <ErrorBlock status='default' fullPage />
               </main>
             }
           />

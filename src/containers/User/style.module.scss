@@ -1,0 +1,25 @@
+.user {
+  max-width: 96%;
+  margin: 10px auto;
+  .info {
+    position: relative;
+    line-height: 2;
+    margin-bottom: 10px;
+    .edit {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+    }
+  }
+
+  .list {
+    .item {
+      display: flex;
+      .detail {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+      }
+    }
+  }
+}
