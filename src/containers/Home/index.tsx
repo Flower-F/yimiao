@@ -43,7 +43,7 @@ const Home: FC<IHomeProps> = ({ bannerSource }) => {
   return (
     <div className={styles.home}>
       <Header avatarUrl={avatarUrl} />
-      <Image src={bannerSource} />
+      <Image src={bannerSource} className={styles.banner} />
       <CardList list={list} className={styles.cardList} />
     </div>
   );

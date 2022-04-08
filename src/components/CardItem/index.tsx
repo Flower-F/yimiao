@@ -1,8 +1,8 @@
 import { Button, Card } from 'antd-mobile';
 import { RightOutline } from 'antd-mobile-icons';
 import { FC } from 'react';
-import styles from './style.module.scss';
 import { OperationTypes } from './types';
+import styles from './style.module.scss';
 
 export interface ICardItemProps {
   status: string;
@@ -46,10 +46,6 @@ const CardItem: FC<ICardItemProps> = ({ status, title, type, operation }) => {
         <p>状态：{status}</p>
       </div>
       <div className={styles.footer}>
-        {/* {operation === OperationTypes.SUBSCRIBE ? (
-        ) : (
-          <Button color='primary'>关注疫苗</Button>
-        )} */}
         {getStatusButton()}
       </div>
     </Card>

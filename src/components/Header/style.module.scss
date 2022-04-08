@@ -1,9 +1,16 @@
 .header {
+  position: sticky;
+  top: 0;
   display: flex;
+  background-color: #f1f1f1;
+  z-index: 1000;
   justify-content: space-between;
   min-height: 40px;
   line-height: 56px;
-  padding: 8px 0;
+  padding: 8px 6px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  box-shadow: 5px 5px 10px #9f9f9f, -5px -5px 10px #ffffff;
 
   .avatar {
     margin-top: 6px;

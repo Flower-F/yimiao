@@ -1,7 +1,7 @@
-import styles from './style.module.scss';
 import { HeartOutline } from 'antd-mobile-icons';
 import { FC } from 'react';
 import { Avatar } from 'antd-mobile';
+import styles from './style.module.scss';
 
 interface IHeaderProps {
   avatarUrl: string;
