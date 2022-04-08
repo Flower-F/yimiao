@@ -2,27 +2,24 @@
   max-width: 90%;
   margin: 10px auto;
   .info {
-    position: relative;
     line-height: 2;
     margin-bottom: 10px;
     .edit {
-      position: absolute;
-      top: 60px;
-      right: 20px;
+      text-align: right;
     }
   }
 
   .selection {
     .list {
       margin-top: 10px;
-      .item {
-        display: flex;
-        .detail {
-          display: flex;
-          align-items: center;
-          margin-left: auto;
-        }
+      .detail {
+        margin-top: 4px;
+        text-align: right;
       }
     }
+  }
+
+  .logout {
+    margin-top: 10px;
   }
 }

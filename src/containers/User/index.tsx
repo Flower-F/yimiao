@@ -1,7 +1,9 @@
+import { getAuthClient } from '@authing/react-ui-components';
 import { Button, Card, Input, List, Selector, Toast } from 'antd-mobile';
 import { useState } from 'react';
 import { ICardItemProps } from '../../components/CardItem';
 import { OperationTypes } from '../../components/CardItem/types';
+import { logout } from '../../utils/logout';
 import styles from './style.module.scss';
 import { EditTypes } from './types';
 
@@ -76,6 +78,12 @@ const User = () => {
     }
   };
 
+  const handleLogout = () => {
+    getAuthClient()?.logout();
+    logout();
+    window.location.reload();
+  };
+
   const changeEditStatus = (id: number) => {
     if (id === EditTypes.USER) {
       if (editFamily) {
@@ -137,13 +145,11 @@ const User = () => {
             </div>
           )}
         </>
-
-        <Button
-          className={styles.edit}
-          onClick={() => changeEditStatus(EditTypes.USER)}
-        >
-          {!editUser ? '修改信息' : '保存信息'}
-        </Button>
+        <div className={styles.edit}>
+          <Button onClick={() => changeEditStatus(EditTypes.USER)}>
+            {!editUser ? '修改信息' : '保存信息'}
+          </Button>
+        </div>
       </Card>
 
       <Card title='家庭成员' className={styles.info}>
@@ -173,12 +179,11 @@ const User = () => {
           </div>
         )}
 
-        <Button
-          className={styles.edit}
-          onClick={() => changeEditStatus(EditTypes.FAMILY)}
-        >
-          {!editFamily ? '修改信息' : '保存信息'}
-        </Button>
+        <div className={styles.edit}>
+          <Button onClick={() => changeEditStatus(EditTypes.FAMILY)}>
+            {!editFamily ? '修改信息' : '保存信息'}
+          </Button>
+        </div>
       </Card>
 
       <Card className={styles.selection}>
@@ -202,6 +207,15 @@ const User = () => {
           })}
         </List>
       </Card>
+
+      <Button
+        block
+        color='danger'
+        className={styles.logout}
+        onClick={handleLogout}
+      >
+        退出登录
+      </Button>
     </div>
   );
 };
