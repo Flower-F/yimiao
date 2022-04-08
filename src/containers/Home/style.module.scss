@@ -1,9 +1,11 @@
 .home {
-  max-width: 90%;
   margin: 0 auto;
 
   .banner {
+    max-width: 90%;
+    margin: 0 auto;
     margin-top: 14px;
+    border-radius: 4px;
   }
 
   .cardList {

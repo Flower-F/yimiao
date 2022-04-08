@@ -51,4 +51,5 @@ const CardItem: FC<ICardItemProps> = ({ status, title, type, operation }) => {
     </Card>
   );
 };
+
 export default CardItem;

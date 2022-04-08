@@ -29,7 +29,7 @@ const CardList: FC<ICardListProps> = ({ list: originalList, className }) => {
   const [visible, setVisible] = useState(false);
 
   return (
-    <div className={className}>
+    <div className={`${styles.cardList} ${className}`}>
       <div className={styles.selection}>
         <Button onClick={() => setVisible(true)} color='default'>
           选择类型
@@ -42,9 +42,7 @@ const CardList: FC<ICardListProps> = ({ list: originalList, className }) => {
             setVisible(false);
           }}
           value={selections}
-          onConfirm={setSelections}
-          onSelect={(val, extend) => {
-            console.log('onSelect', val, extend.items);
+          onConfirm={(val, extend) => {
             const selectionTitle = extend.items[1]?.value;
             const selectionType = extend.items[0]?.value;
 
@@ -59,13 +57,14 @@ const CardList: FC<ICardListProps> = ({ list: originalList, className }) => {
             });
 
             setList(newList);
+            setSelections(val);
           }}
         />
 
         <div>{selections?.join(',') || '未选择'}</div>
       </div>
 
-      <ul className={styles.cardList}>
+      <ul>
         {list.length > 0 ? (
           list.map((properties, index) => {
             return (
@@ -81,4 +80,5 @@ const CardList: FC<ICardListProps> = ({ list: originalList, className }) => {
     </div>
   );
 };
+
 export default CardList;
