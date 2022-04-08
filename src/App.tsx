@@ -9,6 +9,7 @@ import { getLoginStatus } from './utils/login';
 import { ErrorBlock } from 'antd-mobile';
 
 const User = lazy(() => import('./containers/User'));
+const Detail = lazy(() => import('./containers/Detail'));
 
 initAuthClient({
   appId: '62110454c4fafbf8af15124a',
@@ -35,6 +36,14 @@ function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <User />
+              </Suspense>
+            }
+          />
+          <Route
+            path='detail'
+            element={
+              <Suspense fallback={<Loading />}>
+                <Detail />
               </Suspense>
             }
           />
