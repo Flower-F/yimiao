@@ -20,14 +20,14 @@ const list = [
   },
   {
     operation: OperationTypes.FOLLOW,
-    title: '小谷围社区',
-    type: '新冠疫苗',
+    title: 'C5 427',
+    type: '九价疫苗',
     status: '2014-12-24 14:27:00 开放预约',
   },
   {
     operation: OperationTypes.FOLLOWED,
-    title: '小谷围社区',
-    type: '新冠疫苗',
+    title: '北京路',
+    type: '四价疫苗',
     status: '2014-12-24 14:27:00 开放预约',
   },
 ];

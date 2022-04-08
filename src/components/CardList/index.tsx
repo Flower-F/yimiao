@@ -1,4 +1,6 @@
-import { FC } from 'react';
+import { Button, Empty, Picker } from 'antd-mobile';
+import { PickerValue } from 'antd-mobile/es/components/picker-view';
+import { FC, useState } from 'react';
 import CardItem, { ICardItemProps } from '../CardItem';
 import styles from './style.module.scss';
 
@@ -7,17 +9,76 @@ interface ICardListProps {
   className: string;
 }
 
-const CardList: FC<ICardListProps> = ({ list, className }) => {
+const columnsData = [
+  [
+    { label: '新冠疫苗', value: '新冠疫苗' },
+    { label: '九价疫苗', value: '九价疫苗' },
+    { label: '二价疫苗', value: '二价疫苗' },
+    { label: '四价疫苗', value: '四价疫苗' },
+  ],
+  [
+    { label: '小谷围社区', value: '小谷围社区' },
+    { label: 'C5 427', value: 'C5 427' },
+    { label: '北京路', value: '北京路' },
+  ],
+];
+
+const CardList: FC<ICardListProps> = ({ list: originalList, className }) => {
+  const [selections, setSelections] = useState<PickerValue[] | undefined>([]);
+  const [list, setList] = useState(originalList);
+  const [visible, setVisible] = useState(false);
+
   return (
-    <ul className={`${styles.cardList} ${className}`}>
-      {list.map((properties, index) => {
-        return (
-          <li key={index} className={styles.cardItem}>
-            <CardItem {...properties} />
-          </li>
-        );
-      })}
-    </ul>
+    <div className={className}>
+      <div className={styles.selection}>
+        <Button onClick={() => setVisible(true)} color='default'>
+          选择类型
+        </Button>
+
+        <Picker
+          columns={columnsData}
+          visible={visible}
+          onClose={() => {
+            setVisible(false);
+          }}
+          value={selections}
+          onConfirm={setSelections}
+          onSelect={(val, extend) => {
+            console.log('onSelect', val, extend.items);
+            const selectionTitle = extend.items[1]?.value;
+            const selectionType = extend.items[0]?.value;
+
+            const newList: ICardItemProps[] = [];
+            originalList.forEach((item) => {
+              if (
+                item.title === selectionTitle &&
+                item.type === selectionType
+              ) {
+                newList.push(item);
+              }
+            });
+
+            setList(newList);
+          }}
+        />
+
+        <div>{selections?.join(',') || '未选择'}</div>
+      </div>
+
+      <ul className={styles.cardList}>
+        {list.length > 0 ? (
+          list.map((properties, index) => {
+            return (
+              <li key={index} className={styles.cardItem}>
+                <CardItem {...properties} />
+              </li>
+            );
+          })
+        ) : (
+          <Empty description='暂无数据' />
+        )}
+      </ul>
+    </div>
   );
 };
 export default CardList;
