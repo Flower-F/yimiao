@@ -29,7 +29,7 @@ const CardItem: FC<ICardItemProps> = ({ status, title, type, operation }) => {
       title={<h3 style={{ fontWeight: 'normal' }}>{title}</h3>}
       extra={<RightOutline />}
       className={styles.card}
-      onClick={goToDetail}
+      onHeaderClick={goToDetail}
     >
       <div className={styles.content}>
         <p>疫苗类型：{type}</p>

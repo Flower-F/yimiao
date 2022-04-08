@@ -5,15 +5,15 @@ import { ICardItemProps } from '../../components/CardItem';
 import { OperationTypes } from '../../components/CardItem/types';
 import { logout } from '../../utils/logout';
 import styles from './style.module.scss';
-import { EditTypes } from './types';
+import { EditFamilyTypes, EditTypes, EditUserTypes } from './types';
 
-const user = {
+const originalUser = {
   name: '欠锅欠锅欠',
   phone: '12345678901',
   id: '123456789012345678',
 };
 
-const family = {
+const originalFamily = {
   name: '欠儿',
   phone: '12345678909',
 };
@@ -45,11 +45,13 @@ const options = [
 ];
 
 const User = () => {
-  const [list, setList] =
-    useState<Omit<ICardItemProps, 'status'>[]>(originalList);
+  const [list, setList] = useState(originalList);
   const [selections, setSelections] = useState<string[]>([]);
   const [editUser, setEditUser] = useState(false);
   const [editFamily, setEditFamily] = useState(false);
+
+  const [user, setUser] = useState(originalUser);
+  const [family, setFamily] = useState(originalFamily);
 
   const changeList = (arr: string[]) => {
     setSelections(arr);
@@ -106,6 +108,39 @@ const User = () => {
     }
   };
 
+  const changeUserInfo = (type: EditUserTypes, value: string) => {
+    if (type === EditUserTypes.NAME) {
+      setUser({
+        ...user,
+        name: value,
+      });
+    } else if (type === EditUserTypes.ID) {
+      setUser({
+        ...user,
+        id: value,
+      });
+    } else if (type === EditUserTypes.PHONE) {
+      setUser({
+        ...user,
+        phone: value,
+      });
+    }
+  };
+
+  const changeFamilyInfo = (type: EditFamilyTypes, value: string) => {
+    if (type === EditFamilyTypes.NAME) {
+      setFamily({
+        ...family,
+        name: value,
+      });
+    } else if (type === EditFamilyTypes.PHONE) {
+      setFamily({
+        ...family,
+        phone: value,
+      });
+    }
+  };
+
   return (
     <div className={styles.user}>
       <Card title='个人信息' className={styles.info}>
@@ -121,25 +156,30 @@ const User = () => {
               <div>
                 姓名：
                 <Input
-                  defaultValue={user.name}
+                  value={user.name}
                   placeholder='请输入姓名'
                   clearable
+                  onChange={(name) => changeUserInfo(EditUserTypes.NAME, name)}
                 />
               </div>
               <div>
                 联系方式：
                 <Input
-                  defaultValue={user.phone}
+                  value={user.phone}
                   placeholder='请输入联系方式'
                   clearable
+                  onChange={(phone) =>
+                    changeUserInfo(EditUserTypes.PHONE, phone)
+                  }
                 />
               </div>
               <div>
                 身份证号码：
                 <Input
-                  defaultValue={user.id}
+                  value={user.id}
                   placeholder='请输入身份证号'
                   clearable
+                  onChange={(id) => changeUserInfo(EditUserTypes.ID, id)}
                 />
               </div>
             </div>
@@ -166,6 +206,9 @@ const User = () => {
                 defaultValue={family.name}
                 placeholder='请输入姓名'
                 clearable
+                onChange={(name) =>
+                  changeFamilyInfo(EditFamilyTypes.NAME, name)
+                }
               />
             </div>
             <div>
@@ -174,6 +217,9 @@ const User = () => {
                 defaultValue={family.phone}
                 placeholder='请输入联系方式'
                 clearable
+                onChange={(phone) =>
+                  changeFamilyInfo(EditFamilyTypes.PHONE, phone)
+                }
               />
             </div>
           </div>
