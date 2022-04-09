@@ -1,7 +1,7 @@
 import { Form, Input, Button, Card } from 'antd-mobile';
 import styles from './style.module.scss';
 
-const data = {
+const info = {
   payment: 1500,
   title: '小谷围社区',
   time: '2022.5.1',
@@ -17,9 +17,9 @@ const FormPage = () => {
 
   return (
     <div className={styles.form}>
-      <Card title={data.title}>
-        <p>疫苗费用：{data.payment}</p>
-        <p>接种时间：{data.time}</p>
+      <Card title={info.title}>
+        <p>疫苗费用：{info.payment}</p>
+        <p>接种时间：{info.time}</p>
       </Card>
       <Form
         layout='horizontal'

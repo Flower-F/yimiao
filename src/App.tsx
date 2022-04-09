@@ -11,6 +11,7 @@ import { ErrorBlock } from 'antd-mobile';
 const Form = lazy(() => import('./containers/Form'));
 const User = lazy(() => import('./containers/User'));
 const Detail = lazy(() => import('./containers/Detail'));
+const Success = lazy(() => import('./containers/Success'));
 
 initAuthClient({
   appId: '625053a3aa0ec8dbd0381ba1',
@@ -53,6 +54,14 @@ function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <Form />
+              </Suspense>
+            }
+          />
+          <Route
+            path='success'
+            element={
+              <Suspense fallback={<Loading />}>
+                <Success />
               </Suspense>
             }
           />
