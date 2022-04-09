@@ -67,11 +67,9 @@ axiosInstance.interceptors.response.use(
 // 配置 token 携带
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (config.method === 'post') {
-      const { token } = localStorage;
-      if (token && config.headers) {
-        config.headers.token = token;
-      }
+    const { token } = localStorage;
+    if (token && config.headers) {
+      config.headers.token = token;
     }
     return config;
   },

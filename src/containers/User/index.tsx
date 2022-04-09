@@ -1,6 +1,14 @@
 import { getAuthClient } from '@authing/react-ui-components';
-import { Button, Card, Input, List, Selector, Toast } from 'antd-mobile';
-import { useEffect, useState } from 'react';
+import {
+  Button,
+  Card,
+  Input,
+  List,
+  Selector,
+  SpinLoading,
+  Toast,
+} from 'antd-mobile';
+import { SetStateAction, useEffect, useState } from 'react';
 import { ICardItemProps } from '../../components/CardItem';
 import { OperationTypes } from '../../components/CardItem/types';
 import { axiosInstance } from '../../request';
@@ -8,31 +16,12 @@ import { logout } from '../../utils/logout';
 import styles from './style.module.scss';
 import { EditFamilyTypes, EditTypes, EditUserTypes } from './types';
 
-// const originalUser = {
-//   name: '欠锅欠锅欠',
-//   phone: '12345678901',
-//   id: '123456789012345678',
-// };
-
-// const originalFamily = {
-//   name: '欠儿',
-//   phone: '12345678909',
-// };
-
-const originalList = [
-  {
-    id: '21313214',
-    operation: OperationTypes.SUBSCRIBED,
-    title: '小谷围社区',
-    type: '新冠疫苗',
-  },
-  {
-    id: '21313216',
-    operation: OperationTypes.FOLLOWED,
-    title: '北京路',
-    type: '四价疫苗',
-  },
-];
+interface IListItem {
+  id: string;
+  operation: OperationTypes;
+  title: string;
+  type: string;
+}
 
 interface IUser {
   name: string;
@@ -57,7 +46,8 @@ const options = [
 ];
 
 const User = () => {
-  const [list, setList] = useState(originalList);
+  const [originalList, setOriginalList] = useState<IListItem[]>([]);
+  const [list, setList] = useState<IListItem[]>([]);
   const [selections, setSelections] = useState<string[]>([]);
   const [editUser, setEditUser] = useState(false);
   const [editFamily, setEditFamily] = useState(false);
@@ -65,24 +55,65 @@ const User = () => {
   const [user, setUser] = useState<IUser | null>(null);
   const [family, setFamily] = useState<IFamily | null>(null);
 
+  const [loading, setLoading] = useState(false);
+  
   useEffect(() => {
-    axiosInstance
-      .get('/getUserInfo')
-      .then((res) => {
-        const data = res?.data;
-        if (data && data.code === 200) {
+    setLoading(true);
+    const p1 = axiosInstance.get('/getUserInfo');
+    const p2 = axiosInstance.get('/getUserVac');
+
+    Promise.all([p1, p2])
+      .then((values) => {
+        const data1 = values[0].data;
+
+        if (data1 && data1.code === 200) {
           setFamily({
-            name: data.info.familyName,
-            phone: data.info.familyPhone,
+            name: data1.info.familyName,
+            phone: data1.info.familyPhone,
           });
           setUser({
-            name: data.info.userName,
-            phone: data.info.userPhone,
-            id: data.info.identityCard,
+            name: data1.info.userName,
+            phone: data1.info.userPhone,
+            id: data1.info.identityCard,
           });
         }
+
+        const data2 = values[1].data;
+        if (data2 && data2.code === 200) {
+          const newList: SetStateAction<
+            {
+              id: string;
+              operation: OperationTypes;
+              title: string;
+              type: string;
+            }[]
+          > = [];
+          data2.vacList.forEach(
+            (item: {
+              vacID: string;
+              state: '1' | '0';
+              community: string;
+              name: string;
+            }) => {
+              newList.push({
+                id: item.vacID,
+                operation:
+                  item.state === '1'
+                    ? OperationTypes.FOLLOWED
+                    : OperationTypes.SUBSCRIBED,
+                title: item.community,
+                type: item.name,
+              });
+            }
+          );
+          setList(newList);
+          setOriginalList(newList);
+        }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const changeList = (arr: string[]) => {
@@ -178,6 +209,14 @@ const User = () => {
       });
     }
   };
+
+  if (loading) {
+    return (
+      <div className={styles.dot}>
+        <SpinLoading color='default' />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.user}>
