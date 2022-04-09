@@ -1,6 +1,6 @@
 import { Card, Collapse, Image } from 'antd-mobile';
 import { OperationTypes } from '../../components/CardItem/types';
-import { getStatusButton } from '../../utils/getStatusButton';
+import Panel from '../../components/Panel';
 import styles from './style.module.scss';
 
 const info = {
@@ -17,7 +17,7 @@ const list = [
     id: '123131312',
     name: '宫颈癌九价疫苗',
     batch: 1,
-    payment: '100 元',
+    payment: 100,
     production: '我是生产厂家',
     amount: 1000,
     object: '针对于 16 岁到 26 岁的青少年女性',
@@ -29,7 +29,7 @@ const list = [
     id: '2131312312',
     name: '宫颈癌九价疫苗',
     batch: 2,
-    payment: '100 元',
+    payment: 100,
     production: '我是生产厂家',
     amount: 1000,
     object: '针对于 16 岁到 26 岁的青少年女性',
@@ -41,7 +41,7 @@ const list = [
     id: '12313123123',
     name: '宫颈癌九价疫苗',
     batch: 3,
-    payment: '100 元',
+    payment: 100,
     production: '我是生产厂家',
     amount: 1000,
     object: '针对于 16 岁到 26 岁的青少年女性',
@@ -67,19 +67,20 @@ const Detail = () => {
 
       <Collapse defaultActiveKey={[list[0].id]} className={styles.collapse}>
         {list.map((item) => (
-          <Collapse.Panel key={item.id} title={item.name}>
-            <div>
-              <p>疫苗批次：{item.batch}</p>
-              <p>疫苗费用：{item.payment}</p>
-              <p>生产厂家：{item.production}</p>
-              <p>疫苗数量：{item.amount}</p>
-              <p>接种对象：{item.object}</p>
-              <p>接种时间：{item.time}</p>
-              <p>备注：{item.others}</p>
-            </div>
-
-            <div className={styles.btn}>{getStatusButton(item.operation)}</div>
-          </Collapse.Panel>
+          <div key={item.id}>
+            <Panel {...item} />
+          </div>
+          // <Collapse.Panel key={item.id} title={item.name}>
+          //   <div>
+          //     <p>疫苗批次：{item.batch}</p>
+          //     <p>疫苗费用：{item.payment}</p>
+          //     <p>生产厂家：{item.production}</p>
+          //     <p>疫苗数量：{item.amount}</p>
+          //     <p>接种对象：{item.object}</p>
+          //     <p>接种时间：{item.time}</p>
+          //     <p>备注：{item.others}</p>
+          //   </div>
+          // </Collapse.Panel>
         ))}
       </Collapse>
     </div>

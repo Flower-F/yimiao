@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Card } from 'antd-mobile';
 import { RightOutline } from 'antd-mobile-icons';
@@ -14,9 +14,17 @@ export interface ICardItemProps {
   operation: OperationTypes;
 }
 
-const CardItem: FC<ICardItemProps> = ({ status, title, type, operation }) => {
+const CardItem: FC<ICardItemProps> = ({
+  status,
+  title,
+  type,
+  operation: originalOperation,
+}) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [operation, setOperation] = useState(originalOperation);
+
+  const Button = getStatusButton(operation, setOperation);
 
   const goToDetail = () => {
     if (pathname !== '/detail') {
@@ -35,7 +43,7 @@ const CardItem: FC<ICardItemProps> = ({ status, title, type, operation }) => {
         <p>疫苗类型：{type}</p>
         <p>状态：{status}</p>
       </div>
-      <div className={styles.footer}>{getStatusButton(operation)}</div>
+      <div className={styles.footer}>{Button}</div>
     </Card>
   );
 };
