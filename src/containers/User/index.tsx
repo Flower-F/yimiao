@@ -120,7 +120,7 @@ const User = () => {
     setSelections(arr);
 
     const selection = arr[0];
-    const newList: Omit<ICardItemProps, 'status'>[] = [];
+    const newList: Omit<ICardItemProps, 'time'>[] = [];
 
     if (selection === '1') {
       // 已预约

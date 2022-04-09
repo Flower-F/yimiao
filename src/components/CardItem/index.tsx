@@ -8,14 +8,14 @@ import styles from './style.module.scss';
 
 export interface ICardItemProps {
   id: string;
-  status: string;
+  time: string;
   title: string;
   type: string;
   operation: OperationTypes;
 }
 
 const CardItem: FC<ICardItemProps> = ({
-  status,
+  time,
   title,
   type,
   operation: originalOperation,
@@ -32,6 +32,44 @@ const CardItem: FC<ICardItemProps> = ({
     }
   };
 
+  const mapEnglishMonthToChinese = (month: string) => {
+    switch (month) {
+      case 'Jan':
+        return '01';
+      case 'Feb':
+        return '02';
+      case 'Mar':
+        return '03';
+      case 'Apr':
+        return '04';
+      case 'May':
+        return '05';
+      case 'Jun':
+        return '06';
+      case 'Jul':
+        return '07';
+      case 'Aug':
+        return '08';
+      case 'Sept':
+        return '09';
+      case 'Oct':
+        return '10';
+      case 'Nov':
+        return '11';
+      case 'Dec':
+        return '12';
+    }
+  };
+
+  const getStandardTime = (time: string) => {
+    const date = new Date(time).toString();
+    const timeArray = date.split(' ');
+
+    return `${timeArray[3]}-${mapEnglishMonthToChinese(timeArray[1])}-${
+      timeArray[2]
+    } ${timeArray[4]}`;
+  };
+
   return (
     <Card
       title={<h3 style={{ fontWeight: 'normal' }}>{title}</h3>}
@@ -41,7 +79,7 @@ const CardItem: FC<ICardItemProps> = ({
     >
       <div className={styles.content}>
         <p>疫苗类型：{type}</p>
-        <p>状态：{status}</p>
+        <p>状态：{getStandardTime(time)} 开放预约</p>
       </div>
       <div className={styles.footer}>{Button}</div>
     </Card>
