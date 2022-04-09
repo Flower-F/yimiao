@@ -1,22 +1,23 @@
 import { getAuthClient } from '@authing/react-ui-components';
 import { Button, Card, Input, List, Selector, Toast } from 'antd-mobile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ICardItemProps } from '../../components/CardItem';
 import { OperationTypes } from '../../components/CardItem/types';
+import { axiosInstance } from '../../request';
 import { logout } from '../../utils/logout';
 import styles from './style.module.scss';
 import { EditFamilyTypes, EditTypes, EditUserTypes } from './types';
 
-const originalUser = {
-  name: '欠锅欠锅欠',
-  phone: '12345678901',
-  id: '123456789012345678',
-};
+// const originalUser = {
+//   name: '欠锅欠锅欠',
+//   phone: '12345678901',
+//   id: '123456789012345678',
+// };
 
-const originalFamily = {
-  name: '欠儿',
-  phone: '12345678909',
-};
+// const originalFamily = {
+//   name: '欠儿',
+//   phone: '12345678909',
+// };
 
 const originalList = [
   {
@@ -32,6 +33,17 @@ const originalList = [
     type: '四价疫苗',
   },
 ];
+
+interface IUser {
+  name: string;
+  phone: string;
+  id: string;
+}
+
+interface IFamily {
+  name: string;
+  phone: string;
+}
 
 const options = [
   {
@@ -50,8 +62,28 @@ const User = () => {
   const [editUser, setEditUser] = useState(false);
   const [editFamily, setEditFamily] = useState(false);
 
-  const [user, setUser] = useState(originalUser);
-  const [family, setFamily] = useState(originalFamily);
+  const [user, setUser] = useState<IUser | null>(null);
+  const [family, setFamily] = useState<IFamily | null>(null);
+
+  useEffect(() => {
+    axiosInstance
+      .get('/getUserInfo')
+      .then((res) => {
+        const data = res?.data;
+        if (data && data.code === 200) {
+          setFamily({
+            name: data.info.familyName,
+            phone: data.info.familyPhone,
+          });
+          setUser({
+            name: data.info.userName,
+            phone: data.info.userPhone,
+            id: data.info.identityCard,
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const changeList = (arr: string[]) => {
     setSelections(arr);
@@ -109,6 +141,9 @@ const User = () => {
   };
 
   const changeUserInfo = (type: EditUserTypes, value: string) => {
+    if (!user) {
+      return;
+    }
     if (type === EditUserTypes.NAME) {
       setUser({
         ...user,
@@ -128,6 +163,9 @@ const User = () => {
   };
 
   const changeFamilyInfo = (type: EditFamilyTypes, value: string) => {
+    if (!family) {
+      return;
+    }
     if (type === EditFamilyTypes.NAME) {
       setFamily({
         ...family,
@@ -147,16 +185,16 @@ const User = () => {
         <>
           {!editUser ? (
             <div>
-              <p>姓名：{user.name}</p>
-              <p>联系方式：{user.phone}</p>
-              <p>身份证号码：{user.id}</p>
+              <p>姓名：{user?.name}</p>
+              <p>联系方式：{user?.phone}</p>
+              <p>身份证号码：{user?.id}</p>
             </div>
           ) : (
             <div>
               <div>
                 姓名：
                 <Input
-                  value={user.name}
+                  value={user?.name}
                   placeholder='请输入姓名'
                   clearable
                   onChange={(name) => changeUserInfo(EditUserTypes.NAME, name)}
@@ -165,7 +203,7 @@ const User = () => {
               <div>
                 联系方式：
                 <Input
-                  value={user.phone}
+                  value={user?.phone}
                   placeholder='请输入联系方式'
                   clearable
                   onChange={(phone) =>
@@ -176,7 +214,7 @@ const User = () => {
               <div>
                 身份证号码：
                 <Input
-                  value={user.id}
+                  value={user?.id}
                   placeholder='请输入身份证号'
                   clearable
                   onChange={(id) => changeUserInfo(EditUserTypes.ID, id)}
@@ -195,15 +233,15 @@ const User = () => {
       <Card title='家庭成员' className={styles.info}>
         {!editFamily ? (
           <div>
-            <p>姓名：{family.name}</p>
-            <p>联系方式：{family.phone}</p>
+            <p>姓名：{family?.name}</p>
+            <p>联系方式：{family?.phone}</p>
           </div>
         ) : (
           <div>
             <div>
               姓名：
               <Input
-                defaultValue={family.name}
+                defaultValue={family?.name}
                 placeholder='请输入姓名'
                 clearable
                 onChange={(name) =>
@@ -214,7 +252,7 @@ const User = () => {
             <div>
               联系方式：
               <Input
-                defaultValue={family.phone}
+                defaultValue={family?.phone}
                 placeholder='请输入联系方式'
                 clearable
                 onChange={(phone) =>
