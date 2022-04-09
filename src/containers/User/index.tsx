@@ -56,7 +56,7 @@ const User = () => {
   const [family, setFamily] = useState<IFamily | null>(null);
 
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
     setLoading(true);
     const p1 = axiosInstance.get('/getUserInfo');
@@ -157,6 +157,14 @@ const User = () => {
           content: '请先保存修改内容',
         });
       } else {
+        if (editUser) {
+          axiosInstance
+            .post('/updateUser', {
+              userName: user?.name,
+              identityCard: user?.id,
+            })
+            .catch(() => {});
+        }
         setEditUser(!editUser);
       }
     } else if (id === EditTypes.FAMILY) {
@@ -166,6 +174,14 @@ const User = () => {
           content: '请先保存修改内容',
         });
       } else {
+        if (editFamily) {
+          axiosInstance
+            .post('/updateFamily', {
+              familyName: family?.name,
+              familyPhone: family?.phone,
+            })
+            .catch(() => {});
+        }
         setEditFamily(!editFamily);
       }
     }
@@ -175,22 +191,25 @@ const User = () => {
     if (!user) {
       return;
     }
+    let newUser = null;
     if (type === EditUserTypes.NAME) {
-      setUser({
+      newUser = {
         ...user,
         name: value,
-      });
+      };
     } else if (type === EditUserTypes.ID) {
-      setUser({
+      newUser = {
         ...user,
         id: value,
-      });
+      };
     } else if (type === EditUserTypes.PHONE) {
-      setUser({
+      newUser = {
         ...user,
         phone: value,
-      });
+      };
     }
+
+    setUser(newUser);
   };
 
   const changeFamilyInfo = (type: EditFamilyTypes, value: string) => {
@@ -225,7 +244,6 @@ const User = () => {
           {!editUser ? (
             <div>
               <p>姓名：{user?.name}</p>
-              <p>联系方式：{user?.phone}</p>
               <p>身份证号码：{user?.id}</p>
             </div>
           ) : (
@@ -237,17 +255,6 @@ const User = () => {
                   placeholder='请输入姓名'
                   clearable
                   onChange={(name) => changeUserInfo(EditUserTypes.NAME, name)}
-                />
-              </div>
-              <div>
-                联系方式：
-                <Input
-                  value={user?.phone}
-                  placeholder='请输入联系方式'
-                  clearable
-                  onChange={(phone) =>
-                    changeUserInfo(EditUserTypes.PHONE, phone)
-                  }
                 />
               </div>
               <div>
