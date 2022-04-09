@@ -8,6 +8,7 @@ import Loading from './components/Loading';
 import { getLoginStatus } from './utils/login';
 import { ErrorBlock } from 'antd-mobile';
 
+const Form = lazy(() => import('./containers/Form'));
 const User = lazy(() => import('./containers/User'));
 const Detail = lazy(() => import('./containers/Detail'));
 
@@ -44,6 +45,14 @@ function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <Detail />
+              </Suspense>
+            }
+          />
+          <Route
+            path='form'
+            element={
+              <Suspense fallback={<Loading />}>
+                <Form />
               </Suspense>
             }
           />
