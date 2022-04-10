@@ -17,9 +17,9 @@ const columnsData = [
     { label: '四价疫苗', value: '四价疫苗' },
   ],
   [
-    { label: '小谷围社区', value: '小谷围社区' },
-    { label: 'C5 427', value: 'C5 427' },
-    { label: '北京路', value: '北京路' },
+    { label: '小谷围街社区医院', value: '小谷围街社区医院' },
+    { label: '华南理工大学校医院', value: '华南理工大学校医院' },
+    { label: '中山大学校医院', value: '中山大学校医院' },
   ],
 ];
 

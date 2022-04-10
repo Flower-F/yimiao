@@ -1,5 +1,5 @@
 export function getParams() {
-  const queryString = decodeURI(window.location.search);
+  const queryString = decodeURI(window.location.hash);
   const result: { [x: string]: string } = {};
   if (queryString.indexOf('?') !== -1) {
     const strArray = queryString.split('?')[1].split('&');

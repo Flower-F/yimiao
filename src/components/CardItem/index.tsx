@@ -12,13 +12,16 @@ export interface ICardItemProps {
   title: string;
   type: string;
   operation: OperationTypes;
+  communityId: string;
 }
 
 const CardItem: FC<ICardItemProps> = ({
+  id,
   time,
   title,
   type,
   operation: originalOperation,
+  communityId,
 }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -28,7 +31,7 @@ const CardItem: FC<ICardItemProps> = ({
 
   const goToDetail = () => {
     if (pathname !== '/detail') {
-      navigate('/detail');
+      navigate(`/detail?communityID=${communityId}&vaccineID=${id}`);
     }
   };
 

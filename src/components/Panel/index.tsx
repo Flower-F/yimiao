@@ -6,8 +6,8 @@ import styles from './style.module.scss';
 interface ICollapseProps {
   id: string;
   name: string;
-  batch: number;
-  payment: number;
+  batch: string;
+  payment: string;
   production: string;
   amount: number;
   object: string;

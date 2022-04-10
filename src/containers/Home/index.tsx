@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { OperationTypes } from '../../components/CardItem/types';
 import CardList from '../../components/CardList';
 import { axiosInstance } from '../../request';
+import { getOperation } from '../../utils/getOperation';
 import styles from './style.module.scss';
 
 interface IListItem {
@@ -11,7 +12,7 @@ interface IListItem {
   type: string;
   time: string;
   title: string;
-  communityID: string;
+  communityId: string;
 }
 
 interface IHomeProps {
@@ -21,19 +22,6 @@ interface IHomeProps {
 const Home: FC<IHomeProps> = ({ bannerSource }) => {
   const [list, setList] = useState<IListItem[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const getOperation = (status: '1' | '2' | '3' | '4') => {
-    switch (status) {
-      case '1':
-        return OperationTypes.FOLLOWED;
-      case '2':
-        return OperationTypes.SUBSCRIBED;
-      case '3':
-        return OperationTypes.FOLLOW;
-      case '4':
-        return OperationTypes.SUBSCRIBE;
-    }
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -59,7 +47,7 @@ const Home: FC<IHomeProps> = ({ bannerSource }) => {
                 type: item.vacKind,
                 time: item.opentime,
                 title: item.community,
-                communityID: item.communityID,
+                communityId: item.communityID,
               });
             }
           );

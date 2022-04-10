@@ -1,88 +1,116 @@
 import { Card, Collapse, Image } from 'antd-mobile';
+import { useEffect, useMemo, useState } from 'react';
 import { OperationTypes } from '../../components/CardItem/types';
 import Panel from '../../components/Panel';
+import { axiosInstance } from '../../request';
+import { getParams } from '../../request/getParams';
+import { getOperation } from '../../utils/getOperation';
 import styles from './style.module.scss';
 
-const info = {
-  url: 'https://cdn.jsdelivr.net/gh/Flower-F/picture@main/img/20220408215915.png',
-  title: '小谷围社区',
-  phone: '12345678901',
-  gzh: '3123123212e',
-  address: '广东省广州市番禺区小谷围 XXX 街道',
-  others: '这是全大学城最好的小诊所',
-};
+interface IInfo {
+  url: string;
+  title: string;
+  phone: string;
+  gzh: string;
+  address: string;
+  others: string;
+}
 
-const list = [
-  {
-    id: '123131312',
-    name: '宫颈癌九价疫苗',
-    batch: 1,
-    payment: 100,
-    production: '我是生产厂家',
-    amount: 1000,
-    object: '针对于 16 岁到 26 岁的青少年女性',
-    time: '2022.5.1',
-    others: '这是一段备注，不知道写什么，但是这是一段备注',
-    operation: OperationTypes.FOLLOW,
-  },
-  {
-    id: '2131312312',
-    name: '宫颈癌九价疫苗',
-    batch: 2,
-    payment: 100,
-    production: '我是生产厂家',
-    amount: 1000,
-    object: '针对于 16 岁到 26 岁的青少年女性',
-    time: '2022.5.1',
-    others: '这是一段备注，不知道写什么，但是这是一段备注',
-    operation: OperationTypes.SUBSCRIBE,
-  },
-  {
-    id: '12313123123',
-    name: '宫颈癌九价疫苗',
-    batch: 3,
-    payment: 100,
-    production: '我是生产厂家',
-    amount: 1000,
-    object: '针对于 16 岁到 26 岁的青少年女性',
-    time: '2022.5.1',
-    others: '这是一段备注，不知道写什么，但是这是一段备注',
-    operation: OperationTypes.FOLLOWED,
-  },
-];
+interface IListItem {
+  id: string;
+  name: string;
+  batch: string;
+  payment: string;
+  production: string;
+  amount: number;
+  object: string;
+  time: string;
+  others: string;
+  operation: OperationTypes;
+}
 
 const Detail = () => {
+  const [info, setInfo] = useState<IInfo | null>(null);
+  const [list, setList] = useState<IListItem[]>([]);
+  const params = useMemo(() => getParams(), []);
+
+  useEffect(() => {
+    axiosInstance
+      .get(
+        `/getVacInfo?communityID=${params.communityID}&vaccineID=${params.vaccineID}`
+      )
+      .then((res) => {
+        const data = res.data;
+        // console.log(data);
+        if (data && data.code === 200) {
+          const comInfo = data.comInfo;
+          const newInfo: IInfo = {
+            url: comInfo.comPic,
+            title: comInfo.comName,
+            phone: comInfo.comPhone,
+            gzh: comInfo.comWx,
+            address: comInfo.comAddress,
+            others: comInfo.comNote,
+          };
+          setInfo(newInfo);
+
+          const newList: IListItem[] = [];
+          data.vacInfo.forEach(
+            (item: {
+              vacID: string;
+              vacKind: string;
+              vacBatch: string;
+              vacCost: string;
+              vacManufacturer: string;
+              vacCount: number;
+              vacPerson: string;
+              vacTime: string;
+              note: string;
+              state: '1' | '2' | '3' | '4';
+            }) => {
+              newList.push({
+                id: item.vacID,
+                name: item.vacKind,
+                batch: item.vacBatch,
+                payment: item.vacCost,
+                production: item.vacManufacturer,
+                amount: item.vacCount,
+                object: item.vacPerson,
+                time: item.vacTime,
+                others: item.note,
+                operation: getOperation(item.state),
+              });
+            }
+          );
+
+          setList(newList);
+        }
+      })
+      .catch(() => {});
+  }, [params]);
+
   return (
     <div className={styles.detail}>
       <Card>
-        <Image src={info.url} />
+        <Image src={info?.url || ''} />
         <div className={styles.content}>
-          <h3>{info.title}</h3>
-          <p>联系电话：{info.phone}</p>
-          <p>公众号：{info.gzh}</p>
-          <p>地址：{info.address}</p>
-          <p>备注信息：{info.others}</p>
+          <h3>{info?.title}</h3>
+          <p>联系电话：{info?.phone}</p>
+          <p>公众号：{info?.gzh}</p>
+          <p>地址：{info?.address}</p>
+          <p>备注信息：{info?.others}</p>
         </div>
       </Card>
 
-      <Collapse defaultActiveKey={[list[0].id]} className={styles.collapse}>
-        {list.map((item) => (
-          <div key={item.id}>
-            <Panel {...item} />
-          </div>
-          // <Collapse.Panel key={item.id} title={item.name}>
-          //   <div>
-          //     <p>疫苗批次：{item.batch}</p>
-          //     <p>疫苗费用：{item.payment}</p>
-          //     <p>生产厂家：{item.production}</p>
-          //     <p>疫苗数量：{item.amount}</p>
-          //     <p>接种对象：{item.object}</p>
-          //     <p>接种时间：{item.time}</p>
-          //     <p>备注：{item.others}</p>
-          //   </div>
-          // </Collapse.Panel>
-        ))}
-      </Collapse>
+      {list.length > 0 ? (
+        <Collapse defaultActiveKey={[list[0].id]} className={styles.collapse}>
+          {list.map((item) => (
+            <div key={item.id}>
+              <Panel {...item} />
+            </div>
+          ))}
+        </Collapse>
+      ) : null}
     </div>
   );
 };

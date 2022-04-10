@@ -8,7 +8,7 @@ import {
   SpinLoading,
   Toast,
 } from 'antd-mobile';
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ICardItemProps } from '../../components/CardItem';
 import { OperationTypes } from '../../components/CardItem/types';
 import { axiosInstance } from '../../request';
@@ -21,6 +21,7 @@ interface IListItem {
   operation: OperationTypes;
   title: string;
   type: string;
+  communityId: string;
 }
 
 interface IUser {
@@ -80,20 +81,14 @@ const User = () => {
 
         const data2 = values[1].data;
         if (data2 && data2.code === 200) {
-          const newList: SetStateAction<
-            {
-              id: string;
-              operation: OperationTypes;
-              title: string;
-              type: string;
-            }[]
-          > = [];
+          const newList: IListItem[] = [];
           data2.vacList.forEach(
             (item: {
               vacID: string;
               state: '1' | '0';
               community: string;
               name: string;
+              communityId: string;
             }) => {
               newList.push({
                 id: item.vacID,
@@ -103,6 +98,7 @@ const User = () => {
                     : OperationTypes.SUBSCRIBED,
                 title: item.community,
                 type: item.name,
+                communityId: item.communityId,
               });
             }
           );
