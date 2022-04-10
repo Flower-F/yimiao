@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { getStatusButton } from '../../utils/getStatusButton';
+import { useStatusButton } from '../../hooks/useStatusButton';
 import { OperationTypes } from '../CardItem/types';
 import styles from './style.module.scss';
 
@@ -19,6 +19,8 @@ interface ICollapseProps {
 const Panel: FC<ICollapseProps> = (item) => {
   const [operation, setOperation] = useState(item.operation);
 
+  const button = useStatusButton(operation, setOperation, item.id);
+
   return (
     <div>
       <h3>{item.name}</h3>
@@ -32,9 +34,7 @@ const Panel: FC<ICollapseProps> = (item) => {
         <p>备注：{item.others}</p>
       </div>
 
-      <div className={styles.button}>
-        {getStatusButton(operation, setOperation)}
-      </div>
+      <div className={styles.button}>{button}</div>
     </div>
   );
 };

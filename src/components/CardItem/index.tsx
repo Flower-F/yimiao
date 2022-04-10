@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Card } from 'antd-mobile';
 import { RightOutline } from 'antd-mobile-icons';
 import { OperationTypes } from './types';
-import { getStatusButton } from '../../utils/getStatusButton';
 import styles from './style.module.scss';
+import { useStatusButton } from '../../hooks/useStatusButton';
 
 export interface ICardItemProps {
   id: string;
@@ -27,7 +27,7 @@ const CardItem: FC<ICardItemProps> = ({
   const navigate = useNavigate();
   const [operation, setOperation] = useState(originalOperation);
 
-  const Button = getStatusButton(operation, setOperation);
+  const button = useStatusButton(operation, setOperation, id);
 
   const goToDetail = () => {
     if (pathname !== '/detail') {
@@ -84,7 +84,7 @@ const CardItem: FC<ICardItemProps> = ({
         <p>疫苗类型：{type}</p>
         <p>状态：{getStandardTime(time)} 开放预约</p>
       </div>
-      <div className={styles.footer}>{Button}</div>
+      <div className={styles.footer}>{button}</div>
     </Card>
   );
 };

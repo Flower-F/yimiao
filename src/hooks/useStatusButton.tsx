@@ -1,10 +1,14 @@
 import { Button } from 'antd-mobile';
+import { useNavigate } from 'react-router-dom';
 import { OperationTypes } from '../components/CardItem/types';
 
-export const getStatusButton = (
+export const useStatusButton = (
   operation: OperationTypes,
-  setOperation: React.Dispatch<React.SetStateAction<OperationTypes>>
+  setOperation: React.Dispatch<React.SetStateAction<OperationTypes>>,
+  id: string
 ) => {
+  const navigate = useNavigate();
+
   switch (operation) {
     case OperationTypes.FOLLOW:
       return (
@@ -19,26 +23,24 @@ export const getStatusButton = (
       return (
         <Button
           color='success'
-          onClick={() => setOperation(OperationTypes.SUBSCRIBED)}
+          onClick={() => {
+            navigate(`/form?vaccineID=${id}`);
+            // navigate(`/form?communityID=${communityId}&vaccineID=${id}`);
+            setOperation(OperationTypes.SUBSCRIBED);
+          }}
         >
           预约疫苗
         </Button>
       );
     case OperationTypes.FOLLOWED:
       return (
-        <Button
-          color='primary'
-          disabled
-        >
+        <Button color='primary' disabled>
           您已关注
         </Button>
       );
     case OperationTypes.SUBSCRIBED:
       return (
-        <Button
-          color='success'
-          disabled
-        >
+        <Button color='success' disabled>
           您已预约
         </Button>
       );
