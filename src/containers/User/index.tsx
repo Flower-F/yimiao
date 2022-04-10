@@ -13,8 +13,8 @@ import { ICardItemProps } from '../../components/CardItem';
 import { OperationTypes } from '../../components/CardItem/types';
 import { axiosInstance } from '../../request';
 import { logout } from '../../utils/logout';
-import styles from './style.module.scss';
 import { EditFamilyTypes, EditTypes, EditUserTypes } from './types';
+import styles from './style.module.scss';
 
 interface IListItem {
   id: string;

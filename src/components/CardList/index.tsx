@@ -61,7 +61,7 @@ const CardList: FC<ICardListProps> = ({ list: originalList, className }) => {
           }}
         />
 
-        <div>{selections?.join(',') || '未选择'}</div>
+        <div className={styles.result}>{selections?.join(',') || '未选择'}</div>
       </div>
 
       <ul>

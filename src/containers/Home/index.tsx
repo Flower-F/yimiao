@@ -30,7 +30,6 @@ const Home: FC<IHomeProps> = ({ bannerSource }) => {
       .then((res) => {
         const data = res.data;
         if (data && data.code === 200) {
-          // console.log(data);
           const newList: IListItem[] = [];
           data.vacList.forEach(
             (item: {
