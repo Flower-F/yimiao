@@ -1,25 +1,67 @@
-import { Form, Input, Button, Card } from 'antd-mobile';
+import { Form, Input, Button, Card, SpinLoading } from 'antd-mobile';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../request';
+import { getParams } from '../../request/getParams';
 import styles from './style.module.scss';
 
-const info = {
-  payment: 1500,
-  title: '小谷围社区',
-  time: '2022.5.1',
-};
+interface IInfo {
+  payment: string;
+  title: string;
+  time: string;
+}
 
 const FormPage = () => {
   const [form] = Form.useForm();
+  const [info, setInfo] = useState<IInfo | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const onSubmit = () => {
     const values = form.getFieldsValue();
-    console.log(values);
+    // console.log(values);
+    navigate(
+      `/success?name=${values.name}&phone=${values.phone}&id=${values.id}&vaccineID=${params.vaccineID}`
+    );
   };
+
+  const params = useMemo(() => getParams(), []);
+
+  useEffect(() => {
+    setLoading(true);
+    axiosInstance
+      .get(`/getVacDlc?vaccineID=${params.vaccineID}`)
+      .then((res) => {
+        // console.log(res);
+        const data = res.data;
+        if (data && data.code === 200) {
+          setInfo({
+            payment: data.vacInfo.vacCost,
+            title: data.vacInfo.vacName,
+            time: data.vacInfo.vacTime,
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [params]);
+
+  if (loading) {
+    return (
+      <div className={styles.dot}>
+        <SpinLoading color='default' />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.form}>
-      <Card title={info.title}>
-        <p>疫苗费用：{info.payment}</p>
-        <p>接种时间：{info.time}</p>
+      <Card title={info?.title}>
+        <p>疫苗费用：{info?.payment}</p>
+        <p>接种时间：{info?.time}</p>
       </Card>
       <Form
         layout='horizontal'
