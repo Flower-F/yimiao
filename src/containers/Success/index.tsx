@@ -1,5 +1,6 @@
 import { Button, Card, Divider, NoticeBar, SpinLoading } from 'antd-mobile';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../request';
 import { getParams } from '../../request/getParams';
 import styles from './style.module.scss';
@@ -17,6 +18,12 @@ const Success = () => {
   const [info, setInfo] = useState<IInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const params = useMemo(() => getParams(), []) || null;
+
+  const navigate = useNavigate();
+
+  const goBackHome = () => {
+    navigate('/home');
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -71,7 +78,7 @@ const Success = () => {
         <p>身份证号码：{params?.id}</p>
       </Card>
       <div className={styles.button}>
-        <Button>返回</Button>
+        <Button onClick={goBackHome}>返回</Button>
       </div>
     </div>
   );
