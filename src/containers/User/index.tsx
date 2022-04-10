@@ -85,7 +85,7 @@ const User = () => {
           data2.vacList.forEach(
             (item: {
               vacID: string;
-              state: '1' | '0';
+              state: '1' | '2';
               community: string;
               name: string;
               communityId: string;
